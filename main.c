@@ -17,7 +17,8 @@ void free_map(hashmap_t n) {
 int main(int argc, char* argv[]) {
 
   hashmap_t hashtable[HASH_SIZE];
-  //char * misspelled[MAX_MISSPELLED];
+  char * misspelled[MAX_MISSPELLED];
+  FILE* txt_file;
 
   if (argc < 3 || argc > 3) {
     printf ("%s\n", "Incorrect argument count");
@@ -30,11 +31,23 @@ int main(int argc, char* argv[]) {
 
   for (int i = 0; i < HASH_SIZE; i++) {
     if (hashtable[i]) {
-      printf ("%s\n", hashtable[i]->word);
+      printf ("%s", hashtable[i]->word);
     }
   }
 
-  printf("%i\n", check_word("Hello\n", hashtable));
+  txt_file = fopen(argv[1], "r");
+
+  if (!txt_file) {
+    printf("Could not open file\n");
+    return -1;
+  }
+
+  printf("%i\n", check_word("remember", hashtable));
+  printf("%i\n", check_words(txt_file, hashtable, misspelled));
+
+  for (int i = 0; i < 3; i++) {
+    printf ("%s\n", misspelled[i]);
+  }
 
   for (int i = 0; i < HASH_SIZE; i++) {
     if (hashtable[i]) {

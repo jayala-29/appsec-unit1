@@ -6,24 +6,29 @@
 
 bool check_word(const char* word, hashmap_t hashtable[]) {
 
+  char l_word[strlen(word)];
+
+  strncpy(l_word, word, LENGTH);
+
+  if (strlen(l_word) > LENGTH) {
+    l_word[LENGTH] = '\0';
+  }
+  
   int bucket = hash_function(word);
   hashmap_t cursor = hashtable[bucket];
 
   while (cursor) {
-    if (!strcmp(word, cursor->word)) {
+    if (!strcmp(l_word, cursor->word)) {
       return true;
     } else {
       cursor = cursor->next;
     }
   }
 
-  char l_word[strlen(word)];
-
+  // now check the lowercase version
   for(int i = 0; i < strlen(word); i++) {
       l_word[i] = tolower(word[i]);
   }
-
-  l_word[strlen(word)]='\0';
 
   bucket = hash_function(l_word);
   cursor = hashtable[bucket];
@@ -65,6 +70,8 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
 
     if (strlen(entry) > LENGTH) {
       new_node->word[LENGTH] = '\0';
+    } else {
+      new_node->word[strlen(entry)-1] = '\0';
     }
 
     bucket = hash_function(new_node->word);
@@ -92,17 +99,53 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
 int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
   int num_misspelled = 0;
+
+  char* line = NULL;
+  size_t len;
+  ssize_t read_line;
+
+  while ((read_line = getline(&line, &len, fp)) != EOF) {
+
+    char str[strlen(line)];
+    strcpy(str,line);
+    char delim[] = " ";
+    char* ptr = strtok(str, delim);
+
+    while (ptr) {
+
+      if (!isalpha(ptr[strlen(ptr)-1]) && !isdigit(ptr[strlen(ptr)-1])) {
+        if (ptr[strlen(ptr)-1] == '\n') {
+          ptr[strlen(ptr)-2] = '\0';
+        } else {
+          ptr[strlen(ptr)-1] = '\0';
+        }
+      }
+
+      char str2[strlen(ptr)];
+      strcpy(str2, ptr);
+
+      if (!check_word(str2, hashtable)) {
+        if (num_misspelled > MAX_MISSPELLED) {
+          printf("Maxmimum misspelled words reached, exiting...");
+          break;
+        }
+        misspelled[num_misspelled] = malloc(sizeof(char) * strlen(str2) + 1);
+        strcpy(misspelled[num_misspelled], str2);
+        num_misspelled++;
+      }
+
+      //printf("Checking the word: %s...\n",str2);
+
+      //printf("%s is:  %i\n\n", str2, check_word(str2, hashtable));
+
+      ptr = strtok(NULL, delim);
     
   /*
-    While line in fp is not EOF (end of file):
-        Read the line.
-        Split the line on spaces.
-        For each word in line:
-            Remove punctuation from beginning and end of word.
             If not check_word(word):
                 Append word to misspelled.
-                Increment num_misspelled.
-    Return num_misspelled.*/
+    */
+    }
+  }
 
   return num_misspelled;
 }
