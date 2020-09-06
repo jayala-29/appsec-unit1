@@ -1,23 +1,9 @@
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-
+os: linux
+language: c
+compiler: gcc
 before_install:
-    - eval "${MATRIX_EVAL}"
-
+  - sudo apt-get update
+  - sudo apt-get install -y check
 script:
   - make
-#  - make test
+  - make test
