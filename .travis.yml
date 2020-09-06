@@ -12,7 +12,6 @@ before_install:
     - autoreconf --install
     - ./configure
     - make
-    #- make check
     - make install
     - cd ..
 script:
