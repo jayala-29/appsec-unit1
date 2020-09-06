@@ -1,8 +1,7 @@
-rvm: 1.9.3
 matrix:
   include:
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode11
       env:
         - MATRIX_EVAL="CC=gcc-11.0.3 && CXX=g++-11.0.3"
 
