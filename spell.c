@@ -25,7 +25,6 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     }
   }
 
-  // now check the lowercase version
   for(int i = 0; i < strlen(word); i++) {
       l_word[i] = tolower(word[i]);
   }
