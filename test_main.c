@@ -1,4 +1,4 @@
-#include <check.h>
+#include "check.h"
 #include "dictionary.h"
 #include <stdlib.h>
 
@@ -22,15 +22,14 @@ START_TEST(test_check_word_normal)
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
     ck_assert(check_word(correct_word, hashtable));
-    /*
     ck_assert(!check_word(punctuation_word_2, hashtable));
-    // Test here: What if a word begins and ends with "?*/
+    // Test here: What if a word begins and ends with "?
 }
 END_TEST
 
 START_TEST(test_check_words_normal)
 {
-    /*hashmap_t hashtable[HASH_SIZE];
+    hashmap_t hashtable[HASH_SIZE];
     load_dictionary(DICTIONARY, hashtable);
     char* expected[3];
     expected[0] = "sogn";
@@ -46,8 +45,7 @@ START_TEST(test_check_words_normal)
     ck_assert_msg(test, "%d!=%d", len1, len2);
     ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0);
     ck_assert_msg(strcmp(misspelled[1], expected[1]) == 0);
-    ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);*/
-    printf("test2");
+    ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
 }
 END_TEST
 
