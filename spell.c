@@ -124,6 +124,19 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
       char str2[strlen(ptr)];
       strcpy(str2, ptr);
 
+      if (isdigit(str2[0])) {
+        for (int i = 1; i < strlen(str2); i++) {
+          if (!isdigit(str2[i])) {
+            misspelled[num_misspelled] = malloc(sizeof(char) * strlen(str2) + 1);
+            strcpy(misspelled[num_misspelled], str2);
+            num_misspelled++;
+            break;
+          }
+        }
+        ptr = strtok(NULL, delim);
+        continue;
+      }
+
       if (!check_word(str2, hashtable)) {
         if (num_misspelled > MAX_MISSPELLED) {
           printf("Maxmimum misspelled words reached, exiting...");
@@ -134,18 +147,11 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
         num_misspelled++;
       }
 
-      //printf("Checking the word: %s...\n",str2);
-
-      //printf("%s is:  %i\n\n", str2, check_word(str2, hashtable));
-
       ptr = strtok(NULL, delim);
-    
-  /*
-            If not check_word(word):
-                Append word to misspelled.
-    */
     }
   }
+
+  free(line);
 
   return num_misspelled;
 }

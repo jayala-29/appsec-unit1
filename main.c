@@ -22,30 +22,23 @@ int main(int argc, char* argv[]) {
 
   if (argc < 3 || argc > 3) {
     printf ("%s\n", "Incorrect argument count");
-    return -1;
+    return 1;
   }
 
   if (!load_dictionary(argv[2], hashtable)) {
-    return -2;
-  }
-
-  for (int i = 0; i < HASH_SIZE; i++) {
-    if (hashtable[i]) {
-      printf ("%s", hashtable[i]->word);
-    }
+    return 1;
   }
 
   txt_file = fopen(argv[1], "r");
 
   if (!txt_file) {
     printf("Could not open file\n");
-    return -1;
+    return 1;
   }
 
-  printf("%i\n", check_word("remember", hashtable));
-  printf("%i\n", check_words(txt_file, hashtable, misspelled));
+  int num_misspelled = check_words(txt_file, hashtable, misspelled);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < num_misspelled; i++) {
     printf ("%s\n", misspelled[i]);
   }
 
@@ -54,6 +47,12 @@ int main(int argc, char* argv[]) {
       free_map(hashtable[i]);
     }
   }
+
+  for (int i = 0; i < num_misspelled; i++) {
+    free(misspelled[i]);
+  }
+
+  fclose(txt_file);
 
   return 0;
 }
