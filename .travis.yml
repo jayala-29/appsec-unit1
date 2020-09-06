@@ -7,15 +7,12 @@ matrix:
 
 before_install:
     - eval "${MATRIX_EVAL}"
-    #- brew install git
-    #- echo "export PATH=/usr/local/bin:$PATH" >> ~/.bash_profile
-    #- source ~/.bash_profile
     - git clone https://github.com/libcheck/check.git
     - cd check
     - autoreconf --install
     - ./configure
     - make
-    - make check
+    #- make check
     - make install
     - cd ..
 script:
