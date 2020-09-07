@@ -9,9 +9,13 @@ START_TEST(test_dictionary_normal)
 {
     hashmap_t hashtable[HASH_SIZE];
     ck_assert(load_dictionary(TESTDICT, hashtable));
-    // Here we can test if certain words ended up in certain buckets
-    // to ensure that our load_dictionary works as intended. I leave
-    // this as an exercise.
+    char* expected[4];
+    expected[0] = "first";
+    expected[1] = "second";
+    expected[2] = "third";
+    expected[3] = "test";
+    for (int i = 0; i < 4; i++)
+      ck_assert(check_word(expected[i], hashtable));
 }
 END_TEST
 
@@ -23,7 +27,17 @@ START_TEST(test_check_word_normal)
     const char* punctuation_word_2 = "pl.ace";
     ck_assert(check_word(correct_word, hashtable));
     ck_assert(!check_word(punctuation_word_2, hashtable));
+    ck_assert(!check_word(punctuation_word_2, hashtable));
     // Test here: What if a word begins and ends with "?
+    // Note: this is done in check_words, NOT check_word, as stated in the pseudocode description... 
+    //       including this case as its own below
+    FILE *fp = fopen("includes_quotes.txt", "r");
+    char* expected[1];
+    expected[0] = "includin";
+    char *misspelled[MAX_MISSPELLED];
+    int num_misspelled = check_words(fp, hashtable, misspelled);
+    ck_assert(num_misspelled == 1);
+    ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0, NULL);
 }
 END_TEST
 
@@ -54,8 +68,9 @@ check_word_suite(void)
 {
     Suite * suite;
     TCase * check_word_case;
-    suite = suite_create("check_word");
+    suite = suite_create("running tests for the three functions...");
     check_word_case = tcase_create("Core");
+    tcase_add_test(check_word_case, test_dictionary_normal);
     tcase_add_test(check_word_case, test_check_word_normal);
     tcase_add_test(check_word_case, test_check_words_normal);
     suite_add_tcase(suite, check_word_case);
