@@ -2,8 +2,8 @@
 #include "dictionary.h"
 #include <stdlib.h>
 
-#define DICTIONARY "wordlist.txt"
-#define TESTDICT "test_worlist.txt"
+#define DICTIONARY "./txt_files/wordlist.txt"
+#define TESTDICT "./txt_files/test_worlist.txt"
 
 START_TEST(test_dictionary_normal)
 {
@@ -31,7 +31,7 @@ START_TEST(test_check_word_normal)
     // Test here: What if a word begins and ends with "?
     // Note: this is done in check_words, NOT check_word, as stated in the pseudocode description... 
     //       including this case as its own below
-    FILE *fp = fopen("includes_quotes.txt", "r");
+    FILE *fp = fopen("./txt_files/includes_quotes.txt", "r");
     char* expected[1];
     expected[0] = "includin";
     char *misspelled[MAX_MISSPELLED];
