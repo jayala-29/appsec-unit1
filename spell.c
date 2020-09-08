@@ -112,12 +112,8 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
     while (ptr) {
 
-      if (!isalpha(ptr[strlen(ptr)-1]) && !isdigit(ptr[strlen(ptr)-1])) {
-        if (ptr[strlen(ptr)-1] == '\n') {
-          ptr[strlen(ptr)-2] = '\0';
-        } else {
+      while (!isalpha(ptr[strlen(ptr)-1]) && !isdigit(ptr[strlen(ptr)-1])) {
           ptr[strlen(ptr)-1] = '\0';
-        }
       }
 
       char str2[strlen(ptr)];
