@@ -1,5 +1,0 @@
-&&& ***
-==17034== LEAK SUMMARY:
-==17034==    definitely lost: 128 bytes in 1 blocks
-==17034==    indirectly lost: 0 bytes in 0 blocks
-==17034==      possibly lost: 0 bytes in 0 blocks
