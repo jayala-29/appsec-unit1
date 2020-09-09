@@ -10,7 +10,7 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
 
   strncpy(l_word, word, LENGTH);
 
-  if (strlen(l_word) > LENGTH) {
+  if (strlen(word) > LENGTH) {
     l_word[LENGTH] = '\0';
   }
   
@@ -109,15 +109,38 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
     strcpy(str,line);
     char delim[] = " ";
     char* ptr = strtok(str, delim);
+    int emp;
 
     while (ptr) {
 
-      while (!isalpha(ptr[strlen(ptr)-1]) && !isdigit(ptr[strlen(ptr)-1])) {
-          ptr[strlen(ptr)-1] = '\0';
+      emp = 0;
+
+      char *ps1 = ptr;
+
+      while (!isalpha(ps1[0]) && !isdigit(ps1[0])) {
+        *ps1 = *(ps1+1);
+        ps1++;
+        if (!strlen(ps1)) {
+          emp = 1;
+          break;
+        }
       }
 
-      char str2[strlen(ptr)];
-      strcpy(str2, ptr);
+      if (emp) {
+        ptr = strtok(NULL, delim);
+        continue;
+      }
+
+      while (!isalpha(ps1[strlen(ps1)-1]) && !isdigit(ps1[strlen(ps1)-1])) {
+        ps1[strlen(ps1)-1] = '\0';
+      }
+
+      char str2[strlen(ps1)];
+      strncpy(str2, ps1, LENGTH);
+
+      if (strlen(str2) > LENGTH) {
+        str2[LENGTH] = '\0';
+      }
 
       if (isdigit(str2[0])) {
         for (int i = 1; i < strlen(str2); i++) {
