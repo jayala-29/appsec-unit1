@@ -157,15 +157,6 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
         ptr = strtok(NULL, delim);
         continue;
       } 
-
-      if (str2[0] == '"') {
-	char *ps = str2;
-        while (*ps != '\0') {
-          *ps = *(ps+1);
-	  ps++;
-        }
-      }
-
         
       if (!check_word(str2, hashtable)) {
         if (num_misspelled > MAX_MISSPELLED) {
