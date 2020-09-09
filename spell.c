@@ -115,7 +115,10 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
       emp = 0;
 
-      char *ps1 = ptr;
+      char strr[strlen(ptr)];
+      strcpy(strr, ptr);
+
+      char *ps1 = strr;
 
       while (!isalpha(ps1[0]) && !isdigit(ps1[0])) {
         *ps1 = *(ps1+1);
@@ -129,14 +132,14 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
       if (emp) {
         ptr = strtok(NULL, delim);
         continue;
-      }
+      } 
 
       while (!isalpha(ps1[strlen(ps1)-1]) && !isdigit(ps1[strlen(ps1)-1])) {
         ps1[strlen(ps1)-1] = '\0';
-      }
+      } 
 
       char str2[strlen(ps1)];
-      strncpy(str2, ps1, LENGTH);
+      strcpy(str2, ps1);
 
       if (strlen(str2) > LENGTH) {
         str2[LENGTH] = '\0';
@@ -153,7 +156,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
         }
         ptr = strtok(NULL, delim);
         continue;
-      }
+      } 
 
       if (str2[0] == '"') {
 	char *ps = str2;
@@ -162,6 +165,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 	  ps++;
         }
       }
+
         
       if (!check_word(str2, hashtable)) {
         if (num_misspelled > MAX_MISSPELLED) {
