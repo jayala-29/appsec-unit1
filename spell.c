@@ -6,6 +6,15 @@
 
 bool check_word(const char* word, hashmap_t hashtable[]) {
 
+  if (isdigit(word[0])) {
+    for (int i = 1; i < strlen(word); i++) {
+      if (!isdigit(word[i])) {
+        return false;
+      }
+    }
+    return true;
+  } 
+
   char l_word[strlen(word)];
 
   strncpy(l_word, word, LENGTH);
@@ -110,6 +119,8 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
     char delim[] = " ";
     char* ptr = strtok(str, delim);
     int emp;
+    int ind;
+    int space_exists;
 
     while (ptr) {
 
@@ -145,20 +156,34 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
         str2[LENGTH] = '\0';
       }
 
-      if (isdigit(str2[0])) {
-        for (int i = 1; i < strlen(str2); i++) {
-          if (!isdigit(str2[i])) {
-            misspelled[num_misspelled] = malloc(sizeof(char) * strlen(str2) + 1);
-            strcpy(misspelled[num_misspelled], str2);
-            num_misspelled++;
-            break;
-          }
+      ind = 0;
+      space_exists = 0;
+
+      while (str2[ind] != '\0') {
+        if (!isdigit(str2[ind]) && !isalpha(str2[ind])) {
+          str2[ind] = ' ';
+          space_exists = 1;
         }
-        ptr = strtok(NULL, delim);
-        continue;
-      } 
+        ind++;
+      }
+
+      if (space_exists) {
+        char* ptr2 = strtok(str2, delim);
+        while (ptr2) {
+          if (!check_word(ptr2, hashtable)) {
+            if (num_misspelled > MAX_MISSPELLED) {
+              printf("Maxmimum misspelled words reached, exiting...");
+              break;
+            }
+            misspelled[num_misspelled] = malloc(sizeof(char) * strlen(ptr2) + 1);
+            strcpy(misspelled[num_misspelled], ptr2);
+            num_misspelled++;
+          } 
+          ptr2 = strtok(NULL, delim);
+        }
+      }
         
-      if (!check_word(str2, hashtable)) {
+      if (!check_word(str2, hashtable) && !space_exists) {
         if (num_misspelled > MAX_MISSPELLED) {
           printf("Maxmimum misspelled words reached, exiting...");
           break;
