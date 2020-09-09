@@ -28,8 +28,7 @@ START_TEST(test_check_word_normal)
     ck_assert(check_word(correct_word, hashtable));
     ck_assert(!check_word(punctuation_word_2, hashtable));
     // Test here: What if a word begins and ends with "?
-    // Note: this is done in check_words, NOT check_word, as stated in the pseudocode description... 
-    //       including this case as its own below
+    // Note: this is done in check_words, NOT check_word
     FILE *fp = fopen("./txt_files/includes_quotes.txt", "r");
     char* expected[1];
     expected[0] = "includin";
